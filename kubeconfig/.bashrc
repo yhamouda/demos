@@ -10,7 +10,6 @@ set showmatch           # Highlight matching brackets (great for YAML!)
 set hlsearch            # Highlight all search results
 set incsearch           # Jump to results as you type
 syntax on               # Enable syntax highlighting for oc/k8s YAML
-set background=dark     # Adjust colors for better contrast on projectors
 
 # --- Handling YAML (The OpenShift Special) ---
 set expandtab           # Use spaces instead of tabs (YAML requirement)
