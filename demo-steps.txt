@@ -1,0 +1,10 @@
+STEP 1: Create the SA
+OCP 4.14 uses token request API.
+CMD: oc create sa demo-user
+---
+STEP 2: Permissions
+We are using cluster-admin for this demo.
+CMD: oc adm policy add-cluster-role-to-user cluster-admin -z demo-user
+---
+STEP 3: The Kubeconfig
+Remember to use --embed-certs=true!
