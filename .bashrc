@@ -47,7 +47,7 @@ fi
 unset rc
 # The Ghost Note Function
 function next() {
-	local STEP_FILE="~/demos/kubeconfig/demo-steps.txt"
+	local STEP_FILE="demo-steps.txt"
 
 		# Initialize step counter if it doesn't exist
 	if [ -z "$DEMO_STEP_COUNTER" ]; then
