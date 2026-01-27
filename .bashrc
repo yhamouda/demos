@@ -61,7 +61,7 @@ function next() {
 	fi
 
 	local TOTAL_STEPS=$(grep -c -- "---" "$STEP_FILE")
-	echo -e "\n\033[1;34m>>> GHOST NOTE (Step $DEMO_STEP_COUNTER / $((TOTAL_STEPS + 1)))\033[0m"
+	echo -e "\n\033[1;34m>>> DEMO NOTE (Step $DEMO_STEP_COUNTER / $((TOTAL_STEPS + 1)))\033[0m"
 	awk -v RS="---" -v step="$DEMO_STEP_COUNTER" 'NR==step {print $0}' "$STEP_FILE" | while read -r line; do
 		echo -e "\033[0;90m# $line\033[0m"
 	done
@@ -69,6 +69,21 @@ function next() {
 															    export DEMO_STEP_COUNTER=$((DEMO_STEP_COUNTER + 1))
 }
 
+# The Back Function
+function back() {
+	local STEP_FILE="demo_steps.txt"
+
+		# Check if we are already at the start
+		if [ -z "$DEMO_STEP_COUNTER" ] || [ "$DEMO_STEP_COUNTER" -le 2 ]; then
+			export DEMO_STEP_COUNTER=1
+			echo -e "\n\033[1;33m<<< Already at Step 1\033[0m"
+		else
+			# Subtract 2 because 'next' always prepares the *next* number
+			export DEMO_STEP_COUNTER=$((DEMO_STEP_COUNTER - 2))
+		fi
+		# Trigger the 'next' logic to display the previous step
+		next
+}
 # Simple reset command for when you practice
 function demo-reset() {
 	export DEMO_STEP_COUNTER=1
