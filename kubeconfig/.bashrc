@@ -1,5 +1,27 @@
 # .bashrc
 
+
+# --- Visuals for Students ---
+set number              # Show line numbers (essential for saying 'Look at line 10')
+set cursorcolumn        # Highlight the vertical column (your requested setting)
+set showmatch           # Highlight matching brackets (great for YAML!)
+
+# --- Legibility & Search ---
+set hlsearch            # Highlight all search results
+set incsearch           # Jump to results as you type
+syntax on               # Enable syntax highlighting for oc/k8s YAML
+set background=dark     # Adjust colors for better contrast on projectors
+
+# --- Handling YAML (The OpenShift Special) ---
+set expandtab           # Use spaces instead of tabs (YAML requirement)
+set shiftwidth=2        # 2-space indentation
+set softtabstop=2       # Makes backspace/tab feel natural with 2 spaces
+set autoindent          # Keep indentation on new lines
+
+# --- Demo Workflow ---
+set noswapfile          # Don't create those annoying .swp files
+set mouse=a             # Allow you to scroll with your mouse if needed
+
 # Source global definitions
 if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
