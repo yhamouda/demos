@@ -1,10 +1,31 @@
-STEP 1: Create the SA
-OCP 4.14 uses token request API.
-CMD: oc create sa demo-user
+[STEP 1: IDENTITY]
+# Create the ServiceAccount in the specific namespace.
+# Explain: We are isolating this 'robot' to the auth-tls namespace.
+CMD: oc create sa health-robot -n auth-tls
 ---
-STEP 2: Permissions
-We are using cluster-admin for this demo.
-CMD: oc adm policy add-cluster-role-to-user cluster-admin -z demo-user
+[STEP 2: PERMISSIONS]
+# Assign cluster-reader. 
+# Explain: system:serviceaccount:<namespace>:<name> is the full RBAC identity.
+CMD: oc adm policy add-cluster-role-to-user cluster-reader system:serviceaccount:auth-tls:health-robot
 ---
-STEP 3: The Kubeconfig
-Remember to use --embed-certs=true!
+[STEP 3: TOKEN GENERATION]
+# Requesting a 1-week token (604800s).
+# Explain: This token is not stored in a Secret; it's generated via the TokenRequest API.
+CMD: HEALTHROBOT_TOKEN=$(oc create token health-robot -n auth-tls --duration 604800s)
+---
+[STEP 4: DYNAMIC CONFIG ASSEMBLY]
+# Instead of hardcoding, we pull the current API server and Cluster name.
+# Explain: --embed-certs=true is the "Secret Sauce" that makes the file portable.
+CMD: CLUSTER_NAME=$(oc config view -o jsonpath='{.clusters[0].name}')
+CMD: SERVER_URL=$(oc config view -o jsonpath='{.clusters[0].cluster.server}')
+---
+[STEP 5: BUILDING THE FILE]
+# Setting Cluster, Credentials, and Context in one sequence.
+CMD: oc config set-cluster $CLUSTER_NAME --server=$SERVER_URL --kubeconfig=health-robot.config --embed-certs=true --certificate-authority=<(oc config view --raw -o jsonpath="{.clusters[?(@.name=='$CLUSTER_NAME')].cluster.certificate-authority-data}" | base64 -d)
+CMD: oc config set-credentials health-robot --token=$HEALTHROBOT_TOKEN --kubeconfig=health-robot.config
+CMD: oc config set-context health-robot --cluster=$CLUSTER_NAME --namespace=auth-tls --user=health-robot --kubeconfig=health-robot.config
+CMD: oc config use-context health-robot --kubeconfig=health-robot.config
+---
+[STEP 6: VALIDATION]
+# Test the file without affecting your current session.
+CMD: KUBECONFIG=health-robot.config oc get pods
