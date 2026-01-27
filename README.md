@@ -1,4 +1,4 @@
-# OpenShift Administration Demos 🚀
+# OpenShift Administration Demos
 
 This repository contains interactive demo materials for **OpenShift Container Platform 4.14**. 
 
