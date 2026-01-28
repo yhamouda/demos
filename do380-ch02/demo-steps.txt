@@ -1,0 +1,71 @@
+================================================================================
+DO380 LAB DEMO: LAYER 1 - MANIFEST PORTABILITY (YAML SURGERY)
+================================================================================
+
+[STEP 1: SOURCE ENVIRONMENT]
+# Create a deployment using a cluster-specific internal registry image.
+# Explain: This sets up the 'Layer 2' challenge (ImagePullBackOff) later.
+CMD: oc create deployment test-dep --image=image-registry.openshift-image-registry.svc:5000/openshift/cli --replicas=2 -- sleep 3600
+
+---
+
+[STEP 2: NETWORKING]
+# Create a ClusterIP Service.
+# Explain: This defines internal cluster communication but creates a sticky ClusterIP.
+CMD: oc expose deploy test-dep --port 80
+
+---
+
+[STEP 3: CONFIGURATION]
+# Create a generic secret.
+# Explain: In the export, this data will be base64 encoded.
+CMD: oc create secret generic ci-auth --from-literal=auth=pass
+
+---
+
+[STEP 4: EXTRACTION]
+# Capture the current live state into a raw YAML file.
+# Explain: We use a label selector (-l) to isolate only our application resources.
+CMD: oc get deploy,svc,secret -l app=test-dep -o yaml > app_ddmmyyyyy.yaml
+
+---
+
+[STEP 5: PREPARING THE SURGERY]
+# Create a working copy for sanitization.
+# Explain: Never perform surgery on your only backup file!
+CMD: cp app_ddmmyyyyy.yaml app_clean.yaml
+
+---
+
+[STEP 6: THE MACHETE (BULK SANITIZATION)]
+# Use yq to strip the largest blocks of cluster-specific metadata.
+# Explain: Items[*] allows us to target every resource in the exported list.
+CMD: cat app_ddmmyyyyy.yaml | yq d - 'items[*].status' | yq d - 'items[*].metadata.annotations' > app_clean.yaml
+
+---
+
+[STEP 7: THE SCALPEL (PRECISION EDITING)]
+# Compare the sanitized version against the raw export using vimdiff.
+# Explain: Look for UIDs, resourceVersions, and ClusterIPs that automation missed.
+# Pro-Tip: Inside Vim, type ':set diffopt+=context:0' to hide identical lines.
+CMD: vimdiff app_clean.yaml app_ddmmyyyyy.yaml
+
+---
+
+[STEP 8: PORTABILITY TEST]
+# Attempt to 'teleport' the app into a fresh, empty namespace.
+# Explain: Success here proves the YAML is no longer "anchored" to the old project.
+CMD: oc new-project migration-test
+CMD: oc create -f app_clean.yaml
+
+---
+
+[STEP 9: THE VALIDATION (BRIDGE TO LAYER 2)]
+# Observe the state of the new pods.
+# Explain: The pods exist, but show ImagePullBackOff. 
+# Conclusion: Layer 1 (YAML) is done, but Layer 2 (Images) is still missing.
+CMD: oc get pods
+
+================================================================================
+END OF DEMO
+================================================================================
