@@ -85,7 +85,7 @@ function back() {
 		next
 }
 # Simple reset command for when you practice
-function demo-reset() {
+function reset() {
 	export DEMO_STEP_COUNTER=1
 	echo "Demo counter reset to Step 1."
 }
