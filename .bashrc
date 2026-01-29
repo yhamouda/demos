@@ -44,6 +44,8 @@ if [ -d ~/.bashrc.d ]; then
 	done
 fi
 
+export PS1="\[\e[1;32m\][\u@\h \W]\$ \[\e[0m\]\e[1m"
+
 unset rc
 # The Ghost Note Function
 function next() {
