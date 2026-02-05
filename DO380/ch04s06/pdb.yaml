@@ -1,0 +1,9 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: drain-blocker-pdb
+spec:
+    minAvailable: 1     # <--- The Trap. We have 1, we need 1. Eviction = 0 left.
+    selector:
+      matchLabels:
+        pdb: drain-blocker
