@@ -1,0 +1,159 @@
+apiVersion: platform.stackrox.io/v1alpha1
+kind: Central
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"platform.stackrox.io/v1alpha1","kind":"Central","metadata":{"annotations":{},"name":"central","namespace":"stackrox"},"spec":{"central":{"db":{"isEnabled":"Default","persistence":{"persistentVolumeClaim":{"claimName":"central-db","size":"10Gi"}},"resources":{"limits":{"cpu":2,"memory":"4Gi"},"requests":{"cpu":"750m","memory":"512Mi"}}},"exposure":{"loadBalancer":{"enabled":false,"port":443},"nodePort":{"enabled":false},"route":{"enabled":true}},"notifierSecretsEncryption":{"enabled":false},"resources":{"limits":{"cpu":2,"memory":"2Gi"},"requests":{"cpu":"750m","memory":"512Mi"}},"telemetry":{"enabled":true}},"egress":{"connectivityPolicy":"Online"},"monitoring":{"openshift":{"enabled":true}},"network":{"policies":"Enabled"},"scanner":{"analyzer":{"resources":{"limits":{"cpu":2,"memory":"2Gi"},"requests":{"cpu":"500m","memory":"512Mi"}},"scaling":{"autoScaling":"Disabled","replicas":1}},"db":{"resources":{"limits":{"cpu":2,"memory":"4Gi"},"requests":{"cpu":"500m","memory":"1Gi"}}}},"scannerV4":{"db":{"persistence":{"persistentVolumeClaim":{"size":"35Gi","storageClassName":"lvms-vg1"}},"resources":{"limits":{"cpu":2,"memory":"4Gi"},"requests":{"cpu":"500m","memory":"512Mi"}}},"indexer":{"resources":{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"500m","memory":"512Mi"}},"scaling":{"autoScaling":"Disabled","replicas":1}},"matcher":{"resources":{"limits":{"cpu":4,"memory":"4Gi"},"requests":{"cpu":"500m","memory":"512Mi"}},"scaling":{"autoScaling":"Disabled","replicas":1}},"scannerComponent":"Enabled"}}}
+  creationTimestamp: "2026-10-24T13:11:13Z"
+  finalizers:
+  - uninstall-helm-release
+  generation: 1
+  name: central
+  namespace: stackrox
+  resourceVersion: "319569"
+  uid: 68df59c4-3456-41b5-babf-13b910aef132
+spec:
+  central:
+    db:
+      isEnabled: Default
+      persistence:
+        persistentVolumeClaim:
+          claimName: central-db
+          size: 10Gi
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
+        requests:
+          cpu: 750m
+          memory: 512Mi
+    exposure:
+      loadBalancer:
+        enabled: false
+        port: 443
+      nodePort:
+        enabled: false
+      route:
+        enabled: true
+    notifierSecretsEncryption:
+      enabled: false
+    resources:
+      limits:
+        cpu: 2
+        memory: 2Gi
+      requests:
+        cpu: 750m
+        memory: 512Mi
+    telemetry:
+      enabled: true
+  egress:
+    connectivityPolicy: Online
+  monitoring:
+    openshift:
+      enabled: true
+  network:
+    policies: Enabled
+  scanner:
+    analyzer:
+      resources:
+        limits:
+          cpu: 2
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+      scaling:
+        autoScaling: Disabled
+        maxReplicas: 5
+        minReplicas: 2
+        replicas: 1
+    db:
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
+        requests:
+          cpu: 500m
+          memory: 1Gi
+  scannerV4:
+    db:
+      persistence:
+        persistentVolumeClaim:
+          claimName: scanner-v4-db
+          size: 35Gi
+          storageClassName: lvms-vg1
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+    indexer:
+      resources:
+        limits:
+          cpu: 1
+          memory: 1Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+      scaling:
+        autoScaling: Disabled
+        maxReplicas: 5
+        minReplicas: 2
+        replicas: 1
+    matcher:
+      resources:
+        limits:
+          cpu: 4
+          memory: 4Gi
+        requests:
+          cpu: 500m
+          memory: 512Mi
+      scaling:
+        autoScaling: Disabled
+        maxReplicas: 5
+        minReplicas: 2
+        replicas: 1
+    scannerComponent: Enabled
+status:
+  central:
+    adminPassword:
+      adminPasswordSecretReference: central-htpasswd
+      info: |-
+        A password for the 'admin' user has been automatically generated and stored in the "password" entry of the central-htpasswd secret.
+        To view the password see the secret reference field or run
+          oc -n stackrox get secret central-htpasswd -o go-template='{{index .data "password" | base64decode}}'
+  conditions:
+  - lastTransitionTime: "2026-10-24T13:11:27Z"
+    message: |
+      StackRox Central Services has been installed.
+
+
+
+
+      StackRox Kubernetes Security Platform collects and transmits anonymous usage and
+      system configuration information. If you want to OPT OUT from this, use
+      --set central.telemetry.enabled=false.
+
+
+      Thank you for using StackRox!
+    reason: InstallSuccessful
+    status: "True"
+    type: Deployed
+  - lastTransitionTime: "2026-10-24T13:11:27Z"
+    status: "True"
+    type: Initialized
+  - lastTransitionTime: "2026-10-24T13:11:27Z"
+    status: "False"
+    type: Irreconcilable
+  - lastTransitionTime: "2026-10-24T13:11:27Z"
+    message: No proxy configuration is desired
+    reason: NoProxyConfig
+    status: "False"
+    type: ProxyConfigFailed
+  - lastTransitionTime: "2026-10-24T13:11:27Z"
+    status: "False"
+    type: ReleaseFailed
+  deployedRelease: {}
+  productVersion: 4.6.0
