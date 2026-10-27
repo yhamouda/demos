@@ -1,0 +1,14 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-generator-namespace
+policyDefaults:
+    namespace: test-policies
+    complianceType: musthave
+    severity: medium
+    PolicySets: []
+policies:
+      - name: policy-namespace
+        manifests:
+          - path: /home/student/policyGenerator/manifests/
+
