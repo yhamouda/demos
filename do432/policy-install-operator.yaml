@@ -2,17 +2,11 @@ apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
   annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"policy.open-cluster-management.io/v1","kind":"Policy","metadata":{"annotations":{"policy.open-cluster-management.io/categories":"CM Configuration Management","policy.open-cluster-management.io/controls":"CM-2 Baseline Configuration","policy.open-cluster-management.io/standards":"NIST SP 800-53"},"name":"policy-install-odf","namespace":"default"},"spec":{"disabled":false,"policy-templates":[{"objectDefinition":{"apiVersion":"policy.open-cluster-management.io/v1","kind":"ConfigurationPolicy","metadata":{"name":"policy-odf-namespace"},"spec":{"object-templates":[{"complianceType":"musthave","objectDefinition":{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"openshift-storage"}}}],"remediationAction":"enforce","severity":"high"}}},{"objectDefinition":{"apiVersion":"policy.open-cluster-management.io/v1","kind":"ConfigurationPolicy","metadata":{"name":"policy-odf-operatorgroup"},"spec":{"object-templates":[{"complianceType":"musthave","objectDefinition":{"apiVersion":"operators.coreos.com/v1","kind":"OperatorGroup","metadata":{"name":"openshift-storage-og","namespace":"openshift-storage"},"spec":{"targetNamespaces":["openshift-storage"]}}}],"remediationAction":"enforce","severity":"high"}}},{"objectDefinition":{"apiVersion":"policy.open-cluster-management.io/v1","kind":"ConfigurationPolicy","metadata":{"name":"policy-odf-subscription"},"spec":{"object-templates":[{"complianceType":"musthave","objectDefinition":{"apiVersion":"operators.coreos.com/v1alpha1","kind":"Subscription","metadata":{"name":"odf-operator","namespace":"openshift-storage"},"spec":{"channel":"stable-4.18","installPlanApproval":"Automatic","name":"odf-operator","source":"gls-catalog-cs","sourceNamespace":"openshift-marketplace","startingCSV":"odf-operator.v4.18.4-rhodf"}}}],"remediationAction":"enforce","severity":"high"}}}],"remediationAction":"inform"}}
     policy.open-cluster-management.io/categories: CM Configuration Management
     policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
     policy.open-cluster-management.io/standards: NIST SP 800-53
-  creationTimestamp: "2026-11-01T16:27:29Z"
-  generation: 1
   name: policy-install-odf
   namespace: default
-  resourceVersion: "757177"
-  uid: 97489b6c-bc03-49f9-9e08-d0dfd3744594
 spec:
   disabled: false
   policy-templates:
@@ -74,12 +68,3 @@ spec:
         remediationAction: enforce
         severity: high
   remediationAction: inform
-status:
-  compliant: NonCompliant
-  placement:
-  - placement: policy-install-odf-placement
-    placementBinding: policy-install-odf-placement-binding
-  status:
-  - clustername: managed-cluster
-    clusternamespace: managed-cluster
-    compliant: NonCompliant
