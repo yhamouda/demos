@@ -1,0 +1,115 @@
+apiVersion: cluster.open-cluster-management.io/v1beta1
+kind: Placement
+metadata:
+  name: placement-policy-namespace
+  namespace: policies-deploy
+spec:
+  predicates:
+  - requiredClusterSelector:
+      labelSelector:
+        matchExpressions: []
+  tolerations:
+  - key: cluster.open-cluster-management.io/unavailable
+    operator: Exists
+  - key: cluster.open-cluster-management.io/unreachable
+    operator: Exists
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-namespace
+  namespace: policies-deploy
+placementRef:
+  apiGroup: cluster.open-cluster-management.io
+  kind: Placement
+  name: placement-policy-namespace
+subjects:
+- apiGroup: policy.open-cluster-management.io
+  kind: Policy
+  name: policy-namespace
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  annotations:
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+    policy.open-cluster-management.io/description: ""
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+  name: policy-namespace
+  namespace: policies-deploy
+spec:
+  disabled: false
+  policy-templates:
+  - objectDefinition:
+      apiVersion: policy.open-cluster-management.io/v1
+      kind: ConfigurationPolicy
+      metadata:
+        name: policy-namespace
+      spec:
+        object-templates:
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: v1
+            kind: Namespace
+            metadata:
+              annotations:
+                openshift.io/sa.scc.mcs: s0:c1,c0
+                openshift.io/sa.scc.supplemental-groups: 1000000000/10000
+                openshift.io/sa.scc.uid-range: 1000000000/10000
+              creationTimestamp: "2025-05-22T10:38:58Z"
+              labels:
+                kubernetes.io/metadata.name: default
+                pod-security.kubernetes.io/audit: privileged
+                pod-security.kubernetes.io/enforce: privileged
+                pod-security.kubernetes.io/warn: privileged
+              name: default
+              resourceVersion: "391"
+              uid: 406baedf-c4d1-4414-a193-f1c1fca5e795
+            spec:
+              finalizers:
+              - kubernetes
+            status:
+              phase: Active
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: operators.coreos.com/v1
+            kind: OperatorGroup
+            metadata:
+              annotations:
+                olm.providedAPIs: BackingStore.v1alpha1.noobaa.io,BucketClass.v1alpha1.noobaa.io,CSIAddonsNode.v1alpha1.csiaddons.openshift.io,CephBlockPool.v1.ceph.rook.io,CephBlockPoolRadosNamespace.v1.ceph.rook.io,CephBucketNotification.v1.ceph.rook.io,CephBucketTopic.v1.ceph.rook.io,CephCOSIDriver.v1.ceph.rook.io,CephClient.v1.ceph.rook.io,CephCluster.v1.ceph.rook.io,CephConnection.v1alpha1.csi.ceph.io,CephFilesystem.v1.ceph.rook.io,CephFilesystemMirror.v1.ceph.rook.io,CephFilesystemSubVolumeGroup.v1.ceph.rook.io,CephNFS.v1.ceph.rook.io,CephObjectRealm.v1.ceph.rook.io,CephObjectStore.v1.ceph.rook.io,CephObjectStoreUser.v1.ceph.rook.io,CephObjectZone.v1.ceph.rook.io,CephObjectZoneGroup.v1.ceph.rook.io,CephRBDMirror.v1.ceph.rook.io,ClientProfile.v1alpha1.csi.ceph.io,ClientProfileMapping.v1alpha1.csi.ceph.io,Driver.v1alpha1.csi.ceph.io,EncryptionKeyRotationCronJob.v1alpha1.csiaddons.openshift.io,EncryptionKeyRotationJob.v1alpha1.csiaddons.openshift.io,NamespaceStore.v1alpha1.noobaa.io,NetworkFence.v1alpha1.csiaddons.openshift.io,NetworkFenceClass.v1alpha1.csiaddons.openshift.io,NooBaa.v1alpha1.noobaa.io,NooBaaAccount.v1alpha1.noobaa.io,OCSInitialization.v1.ocs.openshift.io,ObjectBucket.v1alpha1.objectbucket.io,ObjectBucketClaim.v1alpha1.objectbucket.io,OperatorConfig.v1alpha1.csi.ceph.io,Recipe.v1alpha1.ramendr.openshift.io,ReclaimSpaceCronJob.v1alpha1.csiaddons.openshift.io,ReclaimSpaceJob.v1alpha1.csiaddons.openshift.io,StorageClaim.v1alpha1.ocs.openshift.io,StorageClient.v1alpha1.ocs.openshift.io,StorageCluster.v1.ocs.openshift.io,StorageClusterPeer.v1.ocs.openshift.io,StorageConsumer.v1alpha1.ocs.openshift.io,StorageRequest.v1alpha1.ocs.openshift.io,StorageSystem.v1alpha1.odf.openshift.io,VolumeGroupReplication.v1alpha1.replication.storage.openshift.io,VolumeGroupReplicationClass.v1alpha1.replication.storage.openshift.io,VolumeGroupReplicationContent.v1alpha1.replication.storage.openshift.io,VolumeReplication.v1alpha1.replication.storage.openshift.io,VolumeReplicationClass.v1alpha1.replication.storage.openshift.io
+              creationTimestamp: "2026-11-01T16:18:13Z"
+              generateName: openshift-storage-
+              generation: 1
+              name: openshift-storage-hwvtx
+              namespace: openshift-storage
+              resourceVersion: "624721"
+              uid: aa50e535-9d25-4191-992d-04ef77c2f6fd
+            spec:
+              targetNamespaces:
+              - openshift-storage
+              upgradeStrategy: Default
+            status:
+              lastUpdated: "2026-11-01T16:18:13Z"
+              namespaces:
+              - openshift-storage
+        - complianceType: musthave
+          objectDefinition:
+            apiVersion: v1
+            data:
+              crds.yaml: content
+              crdsv1.yaml: content
+              crdsv1beta1.yaml: content
+              creation: MjAyNi0xMC0yMFQxMzowNDozN1o=
+              expiration: MjAyNy0xMC0xNVQxMzowNDozN1o=
+              import.yaml: content
+            kind: Secret
+            metadata:
+              labels:
+                managedcluster-import-controller.open-cluster-management.io/import-secret: ""
+              name: managed-cluster-import
+              namespace: managed-cluster
+            type: Opaque
+        remediationAction: inform
+        severity: medium
+  remediationAction: inform

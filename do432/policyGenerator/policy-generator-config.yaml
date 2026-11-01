@@ -3,12 +3,11 @@ kind: PolicyGenerator
 metadata:
   name: policy-generator-namespace
 policyDefaults:
-    namespace: test-policies
+    namespace: policies-deploy
     complianceType: musthave
     severity: medium
-    PolicySets: []
 policies:
       - name: policy-namespace
         manifests:
-          - path: /home/student/policyGenerator/manifests/
+          - path: /home/student/demos/do432/policyGenerator/manifests
 
