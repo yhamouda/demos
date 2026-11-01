@@ -1,4 +1,4 @@
-#Untar and mv to home dir
+#Download utility via OCP
 tar -xvf /home/student/Downloads/linux-amd64-PolicyGenerator.tar.gz -C /home/student/
 chmod +x /home/student/PolicyGenerator
 sudo cp /home/student/PolicyGenerator /usr/local/bin/
